@@ -7,7 +7,6 @@
 #include <sstream>
 #include <iomanip>
 #include <ctime>
-#include <chrono>
 
 // singleton class for logging
 class Logger
@@ -26,16 +25,26 @@ private:
     template <typename... Args>
     void logMessage(const std::string& level, const Args&... args)
     {
-        auto now = std::chrono::system_clock::now();
-        auto now_c = std::chrono::system_clock::to_time_t(now);
+        std::time_t t = std::time(nullptr);
+        std::tm* time = std::localtime(&t);
 
         std::string formattedLog = stringifyParams(
-            std::put_time(std::localtime(&now_c), "%F %T"),
+            formatTime(time),
             '[' + level + "] ",
             args...
         );
 
         printLog(formattedLog);
+    }
+
+    std::string formatTime(const std::tm* time)
+    {
+        std::stringstream ss;
+        ss << std::setfill('0')
+           << std::setw(2) << time->tm_hour << ':'
+           << std::setw(2) << time->tm_min  << ':'
+           << std::setw(2) << time->tm_sec;
+        return ss.str();
     }
 
     template <typename T>
