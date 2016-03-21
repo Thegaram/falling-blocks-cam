@@ -81,5 +81,7 @@ float FaceDetector::detect() {
 * Reading the actual camera image
 */
 void FaceDetector::read() {
-	camera.read(frame);
+	cv::Mat temp;
+	camera.read(temp);
+	cv::flip(temp, frame, 1);
 }
