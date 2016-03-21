@@ -3,11 +3,10 @@
 
 
 /**
-* Open camera stream 
+* Open camera stream
 * Load pretrained XML file
 */
 void FaceDetector::load() {
-	
 	camera.open(camNumber);
 	try {
 		faceCascade.load(cascadeFileName);
@@ -38,7 +37,7 @@ float FaceDetector::detect() {
 	else {
 		grayFrame = frame;
 	}
-		
+
 	// Shrinking the camera image to increase speed:
 	/*const int DETECTION_WIDTH = 320;
 	cv::Mat smallImg;
@@ -52,9 +51,9 @@ float FaceDetector::detect() {
 	}*/
 
 	// Histogram equalization:
-	equalizeHist(grayFrame, grayFrame);   				
+	equalizeHist(grayFrame, grayFrame);
 
-	// Detecting the face:												
+	// Detecting the face:
 	faceCascade.detectMultiScale(grayFrame, faces, 1.1f, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(80, 80));
 
 
@@ -70,7 +69,7 @@ float FaceDetector::detect() {
 		xCoord = (float)center.x / camera.get(CV_CAP_PROP_FRAME_WIDTH);
 
 		//cv::imshow(detector.getWindowName(), detector.detectedFrame());
-		
+
 	}
 
 	cv::imshow(windowName, frame);

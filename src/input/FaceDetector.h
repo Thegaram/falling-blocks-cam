@@ -2,17 +2,17 @@
 #define FACEDETECTOR_H_DEFINED
 
 #include <opencv2/core/core.hpp>
-#include "opencv2/highgui.hpp"
+#include "opencv2/highgui/highgui.hpp"
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <iostream>
 
 class FaceDetector {
 private:
-	
+
 	cv::CascadeClassifier faceCascade;
 	std::string cascadeFileName = "lbpcascade_frontalface.xml";
-	
+
 	std::string windowName;
 
 	int camNumber;

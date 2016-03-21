@@ -11,9 +11,7 @@ int main(int argc, char *argv[])
     logger.info("Starting threads");
 
     std::thread input(inputLoop);
-    std::thread game(gameLoop);
-
-    game.join();
+    gameLoop();
     input.join();
 
     logger.info("Threads completed");
