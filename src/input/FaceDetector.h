@@ -20,11 +20,14 @@ private:
 
 	cv::Mat frame;
 
+	double headPosX;
+
 public:
 
 	FaceDetector(std::string name = "FaceDetector", int camNum = 0) {
 		windowName = name;
 		camNumber = camNum;
+		headPosX = 0.5;
 	}
 	void load();
 	float detect();

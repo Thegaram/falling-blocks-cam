@@ -23,7 +23,6 @@ void FaceDetector::load() {
 * Detecting and showing the image
 */
 float FaceDetector::detect() {
-	float xCoord = 0.5f;
 	std::vector<cv::Rect> faces;
 	cv::Mat grayFrame;
 
@@ -66,7 +65,7 @@ float FaceDetector::detect() {
 
 		// Draw ellipse around face
 		cv::ellipse(smallImg, center, cv::Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
-		xCoord = (float)center.x / DETECTION_WIDTH;
+		headPosX = (double)center.x / DETECTION_WIDTH;
 
 		//cv::imshow(detector.getWindowName(), detector.detectedFrame());
 
@@ -74,7 +73,7 @@ float FaceDetector::detect() {
 
 	cv::imshow(windowName, smallImg);
 	cv::waitKey(5);
-	return xCoord;
+	return headPosX;
 }
 
 /**
