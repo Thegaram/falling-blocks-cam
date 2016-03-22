@@ -11,8 +11,8 @@ class FaceDetector {
 private:
 
 	cv::CascadeClassifier faceCascade;
-	std::string cascadeFileName = "lbpcascade_frontalface.xml";
-
+	//std::string cascadeFileName = "lbpcascade_frontalface.xml";
+	std::string cascadeFileName = "haarcascade_frontalface_alt.xml";
 	std::string windowName;
 
 	int camNumber;

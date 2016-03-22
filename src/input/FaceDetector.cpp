@@ -39,22 +39,22 @@ float FaceDetector::detect() {
 	}
 
 	// Shrinking the camera image to increase speed:
-	/*const int DETECTION_WIDTH = 320;
+	const int DETECTION_WIDTH = 320;
 	cv::Mat smallImg;
-	float scale = frame.cols / (float)DETECTION_WIDTH;
-	if (frame.cols > DETECTION_WIDTH) {
+	float scale = grayFrame.cols / (float)DETECTION_WIDTH;
+	if (grayFrame.cols > DETECTION_WIDTH) {
 		int scaledHeight = cvRound(frame.rows / scale);
-		cv::resize(frame, smallImg, cv::Size(DETECTION_WIDTH, scaledHeight));
+		cv::resize(grayFrame, smallImg, cv::Size(DETECTION_WIDTH, scaledHeight));
 	}
 	else {
 		smallImg = frame;
-	}*/
+	}
 
 	// Histogram equalization:
-	equalizeHist(grayFrame, grayFrame);
+	equalizeHist(smallImg, smallImg);
 
 	// Detecting the face:
-	faceCascade.detectMultiScale(grayFrame, faces, 1.1f, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(80, 80));
+	faceCascade.detectMultiScale(smallImg, faces, 1.1f, 4, cv::CASCADE_SCALE_IMAGE, cv::Size(40, 40));
 
 
 
@@ -65,14 +65,14 @@ float FaceDetector::detect() {
 		cv::Point center(faces[i].x + faces[i].width / 2, faces[i].y + faces[i].height / 2);
 
 		// Draw ellipse around face
-		cv::ellipse(frame, center, cv::Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
-		xCoord = (float)center.x / camera.get(CV_CAP_PROP_FRAME_WIDTH);
+		cv::ellipse(smallImg, center, cv::Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
+		xCoord = (float)center.x / DETECTION_WIDTH;
 
 		//cv::imshow(detector.getWindowName(), detector.detectedFrame());
 
 	}
 
-	cv::imshow(windowName, frame);
+	cv::imshow(windowName, smallImg);
 	cv::waitKey(5);
 	return xCoord;
 }
