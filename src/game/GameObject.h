@@ -26,6 +26,11 @@ public:
 
     virtual void subdraw() const = 0;
 
+    std::pair<double, double> getPosition() const
+    {
+        return position;
+    }
+
     virtual ~GameObject() {}
 };
 

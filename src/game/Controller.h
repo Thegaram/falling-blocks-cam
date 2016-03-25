@@ -11,6 +11,8 @@
 #include "./Player.h"
 #include "../common/SharedState.h"
 
+#include <GL/glut.h>
+#include <OpenGL/gl3.h>
 
 static std::random_device rndDevice;
 
@@ -24,6 +26,8 @@ private:
 
     Player player;
     double playerPosition = 0.5;
+
+    bool gameOver = false;
 
     double randomBoxX() const
     {
@@ -92,17 +96,31 @@ public:
             box.draw();
 
         player.draw();
-    }
-
-    void mainLoop()
-    {
-        long dt; // TODO
-        bool gameOver = update(dt);
 
         if (gameOver)
-        {
-            // TODO
-            return;
+            drawGameOver();
+    }
+
+    void renderString(GLdouble x, GLdouble y, const std::string& str) const
+    {
+        glColor3d(1.0, 0.0, 0.0);
+        glRasterPos2d(x, y);
+        for (char ch : str)
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ch);
+    }
+
+    void drawGameOver() const
+    {
+        renderString(0, 0, "GAME OVER");
+    }
+
+    void mainLoop(long dt)
+    {
+        if (!gameOver) {
+            bool collision = update(dt);
+
+            if (collision)
+                gameOver = true;
         }
 
         draw();

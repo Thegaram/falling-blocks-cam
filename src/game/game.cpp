@@ -42,8 +42,7 @@ void draw()
     long dt = newTime - elapsedTime;
     elapsedTime = newTime;
 
-    controller.update(dt);
-    controller.draw();
+    controller.mainLoop(dt);
 
     glutSwapBuffers();
     glutPostRedisplay();

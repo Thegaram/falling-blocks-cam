@@ -5,6 +5,8 @@
 #include "./Box.h"
 
 #include <vector>
+#include <cmath>
+#include <iostream>
 
 class Player final : public GameObject
 {
@@ -45,6 +47,22 @@ public:
 
     bool checkCollision(std::vector<Box> boxes) const
     {
+        for (const Box& box : boxes)
+        {
+            auto boxPosition = box.getPosition();
+            double diffX = position.first - boxPosition.first;
+            double diffY = position.second - boxPosition.second;
+
+            if (std::abs(position.first - boxPosition.first)   < 0.1 &&
+                std::abs(position.second - boxPosition.second) < 0.1)
+            {
+                // std::cout << '(' << position.first    << ',' << position.second    << ") ~ "
+                //           << '(' << boxPosition.first << ',' << boxPosition.second << ')' << std::endl;
+
+                return true;
+            }
+        }
+
         return false;
     }
 };
