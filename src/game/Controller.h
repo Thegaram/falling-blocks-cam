@@ -17,10 +17,13 @@ static std::random_device rndDevice;
 class Controller
 {
 private:
-    std::vector<Box> boxes;
-    Player player;
     SharedState& sharedState;
+    std::vector<Box> boxes;
+
     int numBoxes;
+
+    Player player;
+    double playerPosition = 0.5;
 
     double randomBoxX() const
     {
@@ -76,7 +79,8 @@ public:
             boxes.push_back(createBox());
 
         double newPlayerPosition = -1 + sharedState.getHeadPositionX() * 2;
-        player.setPosition(newPlayerPosition);
+        playerPosition = (5 * playerPosition + newPlayerPosition) / 6;
+        player.setPosition(playerPosition);
 
         return player.checkCollision(boxes);
     }
