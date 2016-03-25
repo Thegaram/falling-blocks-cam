@@ -15,3 +15,13 @@ double SharedState::getHeadPositionX() const
 {
     return headPositionX;
 }
+
+void SharedState::setHeadPositionY(double y)
+{
+    headPositionY = y;
+}
+
+double SharedState::getHeadPositionY() const
+{
+    return headPositionY;
+}

@@ -20,17 +20,19 @@ private:
 
 	cv::Mat frame;
 
-	double headPosX;
-
 public:
+
+	double headPosX;
+	double headPosY;
 
 	FaceDetector(std::string name = "FaceDetector", int camNum = 0) {
 		windowName = name;
 		camNumber = camNum;
 		headPosX = 0.5;
+		headPosY = 0.5;
 	}
 	void load();
-	float detect();
+	void detect();
 	void read();
 	//std::string getWindowName() { return windowName; }
 	//cv::Mat detectedFrame() { return frame; }

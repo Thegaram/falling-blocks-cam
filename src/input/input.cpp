@@ -3,6 +3,7 @@
 
 #include "./input.h"
 #include "../common/SharedState.h"
+#include "../common/Logger.h"
 #include "./FaceDetector.h"
 
 using namespace std;
@@ -10,6 +11,7 @@ using namespace std;
 void inputLoop()
 {
     SharedState& state = SharedState::getInstance();
+    Logger& logger = Logger::getInstance();
     double posX = 0.5;
 
     FaceDetector fd;
@@ -18,9 +20,10 @@ void inputLoop()
     while(true)
     {
         fd.read();
-        posX = fd.detect();
+        fd.detect();
 
-        state.setHeadPositionX(posX);
+        state.setHeadPositionX(fd.headPosX);
+        state.setHeadPositionY(fd.headPosY);
         this_thread::sleep_for(chrono::milliseconds(10));
     }
 }

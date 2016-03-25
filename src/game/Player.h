@@ -28,20 +28,38 @@ public:
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_QUADS);
+            glColor3f(0.1, 0.2, 0.3);
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.1f, 0.0f, 0.0f);
+            glVertex3f(0.1f, 0.1f, 0.0f);
+            glVertex3f(0.0f, 0.1f, 0.0f);
+
+            glVertex3f(0.0f, 0.0f, 0.1f);
+            glVertex3f(0.1f, 0.0f, 0.1f);
+            glVertex3f(0.1f, 0.1f, 0.1f);
+            glVertex3f(0.0f, 0.1f, 0.1f);
+
             glColor3f(1.0, 0.2, 0.3);
             glVertex3f(0.0f, 0.0f, 0.0f);
             glVertex3f(0.1f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.0f);
-            glVertex3f(0.0f, 0.1f, 0.0f);
-        glEnd();
+            glVertex3f(0.1f, 0.0f, 0.1f);
+            glVertex3f(0.0f, 0.0f, 0.1f);
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glBegin(GL_QUADS);
-            glColor3f(0.0, 0.0, 0.0);
+            glVertex3f(0.0f, 0.1f, 0.0f);
+            glVertex3f(0.1f, 0.1f, 0.0f);
+            glVertex3f(0.1f, 0.1f, 0.1f);
+            glVertex3f(0.0f, 0.1f, 0.1f);
+
+            glColor3f(0.1, 1.0, 0.3);
             glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.1f, 0.0f);
+            glVertex3f(0.0f, 0.1f, 0.1f);
+            glVertex3f(0.0f, 0.0f, 0.1f);
+
             glVertex3f(0.1f, 0.0f, 0.0f);
             glVertex3f(0.1f, 0.1f, 0.0f);
-            glVertex3f(0.0f, 0.1f, 0.0f);
+            glVertex3f(0.1f, 0.1f, 0.1f);
+            glVertex3f(0.1f, 0.0f, 0.1f);
         glEnd();
     }
 

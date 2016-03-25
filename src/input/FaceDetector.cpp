@@ -22,7 +22,7 @@ void FaceDetector::load() {
 /**
 * Detecting and showing the image
 */
-float FaceDetector::detect() {
+void FaceDetector::detect() {
 	std::vector<cv::Rect> faces;
 	cv::Mat grayFrame;
 
@@ -39,10 +39,11 @@ float FaceDetector::detect() {
 
 	// Shrinking the camera image to increase speed:
 	const int DETECTION_WIDTH = 320;
+	int scaledHeight = frame.rows;
 	cv::Mat smallImg;
 	float scale = grayFrame.cols / (float)DETECTION_WIDTH;
 	if (grayFrame.cols > DETECTION_WIDTH) {
-		int scaledHeight = cvRound(frame.rows / scale);
+		scaledHeight = cvRound(frame.rows / scale);
 		cv::resize(grayFrame, smallImg, cv::Size(DETECTION_WIDTH, scaledHeight));
 	}
 	else {
@@ -66,6 +67,7 @@ float FaceDetector::detect() {
 		// Draw ellipse around face
 		cv::ellipse(smallImg, center, cv::Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
 		headPosX = (double)center.x / DETECTION_WIDTH;
+		headPosY = (double)center.y / scaledHeight;
 
 		//cv::imshow(detector.getWindowName(), detector.detectedFrame());
 
@@ -73,7 +75,6 @@ float FaceDetector::detect() {
 
 	cv::imshow(windowName, smallImg);
 	cv::waitKey(5);
-	return headPosX;
 }
 
 /**
