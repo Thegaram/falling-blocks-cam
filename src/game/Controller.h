@@ -2,10 +2,12 @@
 #define CONTROLLER_H_INCLUDED
 
 #include <vector>
+#include <set>
 #include <utility>
 #include <random>
 
 #include "./Box.h"
+#include "./Bullet.h"
 #include "./Player.h"
 #include "../common/SharedState.h"
 #include "../common/Logger.h"
@@ -20,7 +22,9 @@ class Controller
 private:
     SharedState& sharedState;
     Logger& logger;
+
     std::vector<Box> boxes;
+    std::vector<Bullet> bullets;
 
     int numBoxes;
 
@@ -62,27 +66,57 @@ public:
 
     bool update(long dt)
     {
+        // update bullet position
+        std::set<int> bulletsToDelete;
+        for (int ii = 0; ii < bullets.size(); ++ii)
+        {
+            bool destroyed = bullets[ii].updatePosition(dt);
+            if (destroyed)
+                bulletsToDelete.insert(ii);
+        }
+
         // update box positions
-        std::vector<int> toDelete;
+        std::set<int> boxesToDelete;
         for (int ii = 0; ii < boxes.size(); ++ii)
         {
             bool destroyed = boxes[ii].updatePosition(dt);
             if (destroyed)
-                toDelete.push_back(ii);
+                boxesToDelete.insert(ii);
         }
 
-        int numDestroyed = toDelete.size();
+        int numBoxesDestroyed = boxesToDelete.size();
+
+        // check bullet hits
+        for (int ii = 0; ii < bullets.size(); ++ii)
+        {
+            int boxId = bullets[ii].checkCollision(boxes);
+            if (boxId > -1)
+            {
+                boxesToDelete.insert(boxId);
+                bulletsToDelete.insert(ii);
+                ++numBoxesDestroyed;
+                // TODO: same id twice?
+            }
+        }
 
         // remove destroyed boxes
-        for (int id : toDelete)
+        for (int id : boxesToDelete)
         {
             boxes[id] = boxes.back();
             boxes.pop_back();
         }
 
-        for (int ii = 0; ii < numDestroyed; ++ii)
+        // remove destroyed bullets
+        for (int id : bulletsToDelete)
+        {
+            bullets[id] = bullets.back();
+            bullets.pop_back();
+        }
+
+        for (int ii = 0; ii < numBoxesDestroyed; ++ii)
             boxes.push_back(createBox());
 
+        // update player position
         double newPlayerPosition = -1 + sharedState.getHeadPositionX() * 2;
         playerPosition = (5 * playerPosition + newPlayerPosition) / 6;
         player.setPosition(playerPosition);
@@ -95,6 +129,9 @@ public:
         // TODO
         for (auto& box : boxes)
             box.draw();
+
+        for (auto& bullet : bullets)
+            bullet.draw();
 
         player.draw();
 
@@ -123,6 +160,12 @@ public:
         {
             case Command::SHOOT:
                 logger.debug("SHOOT!");
+
+                bullets.push_back(Bullet{
+                    player.getPosition(),
+                    -0.0005
+                });
+
                 break;
 
             case Command::NOOP: break;
