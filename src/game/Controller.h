@@ -3,13 +3,12 @@
 
 #include <vector>
 #include <utility>
-
 #include <random>
-#include <iostream>
 
 #include "./Box.h"
 #include "./Player.h"
 #include "../common/SharedState.h"
+#include "../common/Logger.h"
 
 #include <GL/glut.h>
 #include <OpenGL/gl3.h>
@@ -20,6 +19,7 @@ class Controller
 {
 private:
     SharedState& sharedState;
+    Logger& logger;
     std::vector<Box> boxes;
 
     int numBoxes;
@@ -50,6 +50,7 @@ public:
     Controller(int numBoxes = 10):
         player({0, -1}),
         sharedState(SharedState::getInstance()),
+        logger(Logger::getInstance()),
         numBoxes(numBoxes)
     {
         // TODO: init boxes
@@ -114,8 +115,24 @@ public:
         renderString(0, 0, "GAME OVER");
     }
 
+    void handleNextCommand()
+    {
+        Command nextCommand = sharedState.getCommand();
+
+        switch(nextCommand)
+        {
+            case Command::SHOOT:
+                logger.debug("SHOOT!");
+                break;
+
+            case Command::NOOP: break;
+        }
+    }
+
     void mainLoop(long dt)
     {
+        handleNextCommand();
+
         if (!gameOver) {
             bool collision = update(dt);
 

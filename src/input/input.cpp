@@ -19,11 +19,17 @@ void inputLoop()
 
     while(true)
     {
+        bool isSmilingOld = fd.isSmiling;
+
         fd.read();
         fd.detect();
 
         state.setHeadPositionX(fd.headPosX);
         state.setHeadPositionY(fd.headPosY);
+
+        if (!isSmilingOld && fd.isSmiling)
+            state.pushCommand(Command::SHOOT);
+
         this_thread::sleep_for(chrono::milliseconds(10));
     }
 }

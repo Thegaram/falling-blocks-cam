@@ -1,7 +1,6 @@
 #include "FaceDetector.h"
 #include <string>
 
-
 /**
 * Open camera stream
 * Load pretrained XML file
@@ -10,6 +9,7 @@ void FaceDetector::load() {
 	camera.open(camNumber);
 	try {
 		faceCascade.load(cascadeFileName);
+		smileCascade.load(smileCascadeFileName);
 	}
 	catch(cv::Exception e){}
 	if (faceCascade.empty()) {
@@ -69,8 +69,23 @@ void FaceDetector::detect() {
 		headPosX = (double)center.x / DETECTION_WIDTH;
 		headPosY = (double)center.y / scaledHeight;
 
-		//cv::imshow(detector.getWindowName(), detector.detectedFrame());
+		// detect smile
+        std::vector<cv::Rect> smiles;
+		cv::Mat smallImgROI = smallImg(faces[i]);
+		smileCascade.detectMultiScale(smallImgROI, smiles, 1.1, 20, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(20, 20));
 
+		if (smiles.size() > 0)
+		{
+			isSmiling = true;
+
+			// Draw ellipse around smile
+			cv::Point center2(faces[i].x + smiles[0].x + smiles[0].width / 2, faces[i].y + smiles[0].y + smiles[0].height / 2);
+			cv::ellipse(smallImg, center2, cv::Size(smiles[0].width / 2, smiles[0].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
+		}
+		else
+		{
+			isSmiling = false;
+		}
 	}
 
 	cv::imshow(windowName, smallImg);

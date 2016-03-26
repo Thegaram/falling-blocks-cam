@@ -11,8 +11,12 @@ class FaceDetector {
 private:
 
 	cv::CascadeClassifier faceCascade;
+	cv::CascadeClassifier smileCascade;
+
 	//std::string cascadeFileName = "lbpcascade_frontalface.xml";
 	std::string cascadeFileName = "haarcascade_frontalface_alt.xml";
+	std::string smileCascadeFileName = "haarcascade_smile.xml";
+
 	std::string windowName;
 
 	int camNumber;
@@ -25,11 +29,14 @@ public:
 	double headPosX;
 	double headPosY;
 
+	bool isSmiling;
+
 	FaceDetector(std::string name = "FaceDetector", int camNum = 0) {
 		windowName = name;
 		camNumber = camNum;
 		headPosX = 0.5;
 		headPosY = 0.5;
+		isSmiling = false;
 	}
 	void load();
 	void detect();
