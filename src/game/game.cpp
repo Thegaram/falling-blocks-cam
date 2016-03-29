@@ -33,7 +33,7 @@ void draw()
 
     // set camera
     float headPosY = state.getHeadPositionY();
-    float newEyePosY = 0 + 50 * (1 - headPosY);
+    float newEyePosY = -40 + 80 * (1 - headPosY);
     eyePosY = (7 * eyePosY + newEyePosY) / 8.0;
     float eyePosX = 10;
 
@@ -45,6 +45,8 @@ void draw()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    if (eyePosY > 0)
+    {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_QUADS);
             glColor3f(0.1, 0.2, 1.0);
@@ -53,6 +55,7 @@ void draw()
             glVertex3f(+5.0f, -1.0f, +5.0f);
             glVertex3f(-5.0f, -1.0f, +5.0f);
         glEnd();
+    }
 
     // draw game objects
     long newTime = glutGet(GLUT_ELAPSED_TIME);
