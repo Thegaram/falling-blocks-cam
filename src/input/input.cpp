@@ -19,6 +19,9 @@ void inputLoop()
 
     while(true)
     {
+        if(state.isGameOver())
+            break;
+
         bool isSmilingOld = fd.isSmiling;
 
         fd.read();

@@ -9,11 +9,9 @@
 #include "./Box.h"
 #include "./Bullet.h"
 #include "./Player.h"
+#include "./Graphics.h"
 #include "../common/SharedState.h"
 #include "../common/Logger.h"
-
-#include <GL/glut.h>
-#include <OpenGL/gl3.h>
 
 static std::random_device rndDevice;
 
@@ -22,6 +20,7 @@ class Controller
 private:
     SharedState& sharedState;
     Logger& logger;
+    Graphics& graphics;
 
     std::vector<Box> boxes;
     std::vector<Bullet> bullets;
@@ -29,42 +28,74 @@ private:
     int numBoxes;
 
     Player player;
-    double playerPosition = 0.5;
+    double playerPosition = 10.0;
 
     bool gameOver = false;
 
+    double currentTime;
+
     double randomBoxX() const
     {
-        double rnd = -1 + (double) (rndDevice() % 100) / 100 * 2;
+        double rnd;
+        bool found = false;
+
+        while (!found)
+        {
+            rnd = (double) (rndDevice() % 100) / 100 * 100;
+            found = true;
+
+            for (const auto& box : boxes)
+            {
+                auto pos = box.getPosition();
+                if (fabs(rnd - pos.first) < 5.f && fabs(102.5 - pos.second) < 5.f)
+                {
+                    found = false;
+                    break;
+                }
+            }
+        }
+
         return rnd;
     }
 
     double randomBoxVelocity() const
     {
-        double rnd = 0.0001 + (double) (rndDevice() % 100) / 100 * 0.0001;
+        double rnd = 5 + (double) (rndDevice() % 100) / 100 * 5;
         return rnd;
     }
 
     Box createBox() const
     {
-        return Box{{randomBoxX(), 1}, randomBoxVelocity()};
+        return Box{{randomBoxX(), 102.5}, randomBoxVelocity()};
     }
 
-public:
     Controller(int numBoxes = 10):
-        player({0, -1}),
+        player({50, 2.5}),
         sharedState(SharedState::getInstance()),
         logger(Logger::getInstance()),
+        graphics(Graphics::getInstance()),
         numBoxes(numBoxes)
     {
         // TODO: init boxes
         for (int ii = 0; ii < numBoxes; ++ii)
             boxes.push_back(createBox());
 
+        currentTime = 0;
+
         // TODO: init player
     }
 
-    bool update(long dt)
+public:
+    static Controller& getInstance()
+    {
+        static Controller instance;
+        return instance;
+    }
+
+    Controller(const Controller&) = delete;
+    Controller& operator=(const Controller&) = delete;
+
+    bool update(double dt)
     {
         // update bullet position
         std::set<int> bulletsToDelete;
@@ -117,7 +148,7 @@ public:
             boxes.push_back(createBox());
 
         // update player position
-        double newPlayerPosition = -1 + sharedState.getHeadPositionX() * 2;
+        double newPlayerPosition = sharedState.getHeadPositionX() * 100;
         playerPosition = (5 * playerPosition + newPlayerPosition) / 6;
         player.setPosition(playerPosition);
 
@@ -126,6 +157,9 @@ public:
 
     void draw()
     {
+        if (sharedState.getHeadPositionY() < 0.5)
+            graphics.drawCube(glm::vec3(50, -55, 0), 110, Graphics::GROUND);
+
         // TODO
         for (auto& box : boxes)
             box.draw();
@@ -136,20 +170,14 @@ public:
         player.draw();
 
         if (gameOver)
+        {
+            sharedState.setGameOver();
             drawGameOver();
-    }
-
-    void renderString(GLdouble x, GLdouble y, const std::string& str) const
-    {
-        glColor3d(1.0, 0.0, 0.0);
-        glRasterPos2d(x, y);
-        for (char ch : str)
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ch);
+        }
     }
 
     void drawGameOver() const
     {
-        renderString(0, 0, "GAME OVER");
     }
 
     void handleNextCommand()
@@ -163,7 +191,7 @@ public:
 
                 bullets.push_back(Bullet{
                     player.getPosition(),
-                    -0.0005
+                    -25
                 });
 
                 break;
@@ -172,11 +200,16 @@ public:
         }
     }
 
-    void mainLoop(long dt)
+    void step()
     {
+        double newTime = glfwGetTime();
+        double dt = newTime - currentTime;
+        currentTime = newTime;
+
         handleNextCommand();
 
-        if (!gameOver) {
+        if (!gameOver)
+        {
             bool collision = update(dt);
 
             if (collision)

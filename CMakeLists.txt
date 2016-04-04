@@ -24,17 +24,22 @@ if(NOT OPENGL_FOUND)
 endif(NOT OPENGL_FOUND)
 
 #########################################################
-# FIND GLUT
+# FIND GLFW3
 #########################################################
-find_package(GLUT REQUIRED)
-include_directories(${GLUT_INCLUDE_DIRS})
-link_directories(${GLUT_LIBRARY_DIRS})
-add_definitions(${GLUT_DEFINITIONS})
-if(NOT GLUT_FOUND)
-    message(ERROR " GLUT not found!")
-endif(NOT GLUT_FOUND)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+include_directories(${GLFW_INCLUDE_DIRS})
+
+#########################################################
+# FIND GLEW
+#########################################################
+pkg_search_module(GLEW REQUIRED glew)
+include_directories(${GLEW_INCLUDE_DIRS})
+if(NOT GLEW_FOUND)
+    message(ERROR " GLEW not found!")
+endif(NOT GLEW_FOUND)
 
 file(GLOB_RECURSE SRCFILES src/*.cpp)
 add_executable(falling-blocks-cam ${SRCFILES})
 add_definitions(-std=c++11)
-target_link_libraries(falling-blocks-cam ${OpenCV_LIBS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(falling-blocks-cam ${OpenCV_LIBS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})

@@ -17,6 +17,8 @@ private:
     std::atomic<double> headPositionX { 0.5 }; // 0..1
     std::atomic<double> headPositionY { 0.5 }; // 0..1
 
+    std::atomic_bool gameOver { false };
+
     std::queue<Command> commandQueue;
     std::mutex queueMutex;
 
@@ -33,6 +35,16 @@ public:
 
     void setHeadPositionY(double);
     double getHeadPositionY() const;
+
+    void setGameOver()
+    {
+        gameOver = true;
+    }
+
+    bool isGameOver() const
+    {
+        return gameOver;
+    }
 
     void pushCommand(Command command)
     {

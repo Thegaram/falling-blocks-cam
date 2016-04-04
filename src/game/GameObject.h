@@ -2,29 +2,21 @@
 #define GAMEOBJECT_H_DEFINED
 
 #include <utility>
+#include "Graphics.h"
 
 class GameObject
 {
 protected:
     std::pair<double, double> position;
+    Graphics* graphics;
+
 
 public:
-    GameObject(std::pair<double, double> pos): position(pos) { }
+    GameObject(std::pair<double, double> pos): position(pos), graphics(&Graphics::getInstance()) { }
 
-    virtual bool updatePosition(long dt) = 0;
+    virtual bool updatePosition(double dt) = 0;
 
-    void draw() const {
-        glPushMatrix();
-        glMatrixMode(GL_MODELVIEW);
-
-        glTranslatef(position.first, position.second, 0);
-
-        subdraw();
-
-        glPopMatrix();
-    }
-
-    virtual void subdraw() const = 0;
+    virtual void draw() const = 0;
 
     std::pair<double, double> getPosition() const
     {

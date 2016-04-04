@@ -1,10 +1,9 @@
 #ifndef BOX_H_INCLUDED
 #define BOX_H_INCLUDED
 
-#include "./GameObject.h"
-#include <OpenGL/gl3.h>
-
 #include <iostream>
+
+#include "./GameObject.h"
 
 class Box final : public GameObject
 {
@@ -14,50 +13,16 @@ private:
 public:
     Box(std::pair<double, double> pos, double v): GameObject(pos), velocity(v) { }
 
-    virtual bool updatePosition(long dt) override
+    virtual bool updatePosition(double dt) override
     {
         position.second -= velocity * dt;
 
-        return position.second < -1.1;
+        return position.second < -2.5;
     }
 
-    virtual void subdraw() const override
+    virtual void draw() const override
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        glBegin(GL_QUADS);
-            glColor3f(0.1, 0.2, 0.3);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.0f);
-            glVertex3f(0.0f, 0.1f, 0.0f);
-
-            glVertex3f(0.0f, 0.0f, 0.1f);
-            glVertex3f(0.1f, 0.0f, 0.1f);
-            glVertex3f(0.1f, 0.1f, 0.1f);
-            glVertex3f(0.0f, 0.1f, 0.1f);
-
-            glColor3f(1.0, 0.2, 0.3);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.0f, 0.1f);
-            glVertex3f(0.0f, 0.0f, 0.1f);
-
-            glVertex3f(0.0f, 0.1f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.1f);
-            glVertex3f(0.0f, 0.1f, 0.1f);
-
-            glColor3f(0.1, 1.0, 0.3);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.0f, 0.1f, 0.0f);
-            glVertex3f(0.0f, 0.1f, 0.1f);
-            glVertex3f(0.0f, 0.0f, 0.1f);
-
-            glVertex3f(0.1f, 0.0f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.0f);
-            glVertex3f(0.1f, 0.1f, 0.1f);
-            glVertex3f(0.1f, 0.0f, 0.1f);
-        glEnd();
+        graphics->drawCube(glm::vec3(position.first, position.second, 0), 5);
     }
 };
 

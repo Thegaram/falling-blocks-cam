@@ -88,7 +88,11 @@ void FaceDetector::detect() {
 		}
 	}
 
-	cv::imshow(windowName, smallImg);
+	cv::Mat outputImage;
+	cv::resize(smallImg, outputImage, cv::Size(2 * DETECTION_WIDTH, 2 * scaledHeight));
+	cv::imshow(windowName, outputImage);
+
+
 	cv::waitKey(5);
 }
 

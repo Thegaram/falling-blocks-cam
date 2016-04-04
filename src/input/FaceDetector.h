@@ -14,8 +14,8 @@ private:
 	cv::CascadeClassifier smileCascade;
 
 	//std::string cascadeFileName = "lbpcascade_frontalface.xml";
-	std::string cascadeFileName = "haarcascade_frontalface_alt.xml";
-	std::string smileCascadeFileName = "haarcascade_smile.xml";
+	std::string cascadeFileName = "assets/xmls/haarcascade_frontalface_alt.xml";
+	std::string smileCascadeFileName = "assets/xmls/haarcascade_smile.xml";
 
 	std::string windowName;
 
