@@ -41,6 +41,7 @@ public:
 	void load();
 	void detect();
 	void read();
+	void cleanup();
 	//std::string getWindowName() { return windowName; }
 	//cv::Mat detectedFrame() { return frame; }
 

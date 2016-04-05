@@ -35,4 +35,6 @@ void inputLoop()
 
         this_thread::sleep_for(chrono::milliseconds(10));
     }
+
+    fd.cleanup();
 }

@@ -104,3 +104,7 @@ void FaceDetector::read() {
 	camera.read(temp);
 	cv::flip(temp, frame, 1);
 }
+
+void FaceDetector::cleanup() {
+	cv::destroyWindow(windowName);
+}
