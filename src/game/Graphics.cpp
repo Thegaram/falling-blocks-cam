@@ -149,7 +149,7 @@ Graphics::~Graphics()
 
 glm::mat4 Graphics::getProjectionMatrix()
 {
-    return glm::ortho(0.f, 100.f, 0.f, 100.f, -30.f, 30.0f);
+    return glm::ortho(0.f, 100.f, 0.f, 100.f, -60.f, 60.0f);
 }
 
 glm::mat4 Graphics::getViewMatrix()
@@ -283,4 +283,13 @@ void Graphics::drawCube(glm::vec3 center, float side, Textures texture)
     float sf = 0.5 * side;
     glm::vec3 scaling = glm::vec3(sf, sf, sf);
     drawModel(cubeModel, translation, scaling, texture);
+}
+
+
+void Graphics::drawSuzanne(glm::vec3 center, float side)
+{
+    glm::vec3 translation = center;
+    float sf = 0.5 * side;
+    glm::vec3 scaling = glm::vec3(sf, sf, sf);
+    drawModel(suzanneModel, translation, scaling, FIRE);
 }

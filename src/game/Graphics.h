@@ -95,6 +95,7 @@ public:
     void onLoopEnd();
 
     void drawCube(glm::vec3 center, float side = 1, Textures texture = BLOCK);
+    void drawSuzanne(glm::vec3 center, float side = 1);
 };
 
 #endif // GRAPHICS_H_INCLUDED

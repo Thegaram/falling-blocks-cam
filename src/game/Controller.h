@@ -178,6 +178,7 @@ public:
 
     void drawGameOver() const
     {
+        graphics.drawSuzanne(glm::vec3(50, 50, 0), 50);
     }
 
     void handleNextCommand()
