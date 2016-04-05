@@ -154,17 +154,9 @@ glm::mat4 Graphics::getProjectionMatrix()
 
 glm::mat4 Graphics::getViewMatrix()
 {
-    static SharedState& state = SharedState::getInstance();
-    static float eyePosY = 0;
-
-    float newEyePosY = - 4 + 8 * state.getHeadPositionY();
-    eyePosY = (15 * eyePosY + newEyePosY) / 16.0;
-
-    // float x = 2 - 4 * ss.getHeadPositionY();
-
-    glm::vec3 cam = glm::vec3( 2, -eyePosY, 20 );
-    glm::vec3 mid = glm::vec3( 0, eyePosY, 0 );
-    glm::vec3 up = glm::vec3( 0, 1, 0 );
+    glm::vec3 cam = glm::vec3( 2.f, -eyePosY, 20.f );
+    glm::vec3 mid = glm::vec3( 0.f, eyePosY, 0.f );
+    glm::vec3 up = glm::vec3( 0.f, 1.f, 0.f );
 
     return glm::lookAt(
         cam, // Camera is here

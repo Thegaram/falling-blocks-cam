@@ -66,7 +66,8 @@ void FaceDetector::detect() {
 
 		// Draw ellipse around face
 		cv::ellipse(smallImg, center, cv::Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, cv::Scalar(0, 255, 255), 4, 8, 0);
-		headPosX = (double)center.x / DETECTION_WIDTH;
+		// headPosX = (double)center.x / DETECTION_WIDTH;
+		headPosX = ((double)center.x / DETECTION_WIDTH - 0.25) / 0.5;
 		headPosY = (double)center.y / scaledHeight;
 
 		// detect smile
@@ -89,7 +90,7 @@ void FaceDetector::detect() {
 	}
 
 	cv::Mat outputImage;
-	cv::resize(smallImg, outputImage, cv::Size(2 * DETECTION_WIDTH, 2 * scaledHeight));
+	cv::resize(smallImg, outputImage, cv::Size(1.5 * DETECTION_WIDTH, 1.5 * scaledHeight));
 	cv::imshow(windowName, outputImage);
 
 

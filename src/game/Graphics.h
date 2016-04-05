@@ -43,6 +43,8 @@ private:
     std::shared_ptr<Model> surfaceModel = nullptr;
     std::shared_ptr<Model> currentModel = nullptr;
 
+    float eyePosY = 0.f;
+
 private:
     static const char* windowName;
 
@@ -96,6 +98,11 @@ public:
 
     void drawCube(glm::vec3 center, float side = 1, Textures texture = BLOCK);
     void drawSuzanne(glm::vec3 center, float side = 1);
+
+    void setEyePosY(float newEyePosY)
+    {
+        eyePosY = newEyePosY;
+    }
 };
 
 #endif // GRAPHICS_H_INCLUDED

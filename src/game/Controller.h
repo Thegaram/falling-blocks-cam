@@ -149,7 +149,8 @@ public:
 
         // update player position
         double newPlayerPosition = sharedState.getHeadPositionX() * 100;
-        playerPosition = (5 * playerPosition + newPlayerPosition) / 6;
+        float alpha = 0.9;
+        playerPosition = alpha * playerPosition + (1 - alpha) * newPlayerPosition;
         player.setPosition(playerPosition);
 
         return player.checkCollision(boxes);
@@ -157,7 +158,14 @@ public:
 
     void draw()
     {
-        if (sharedState.getHeadPositionY() < 0.5)
+        static float eyePosY = 0.f;
+        static const float alpha = 0.95;
+
+        float newEyePosY = -5 + 10 * sharedState.getHeadPositionY();
+        eyePosY = alpha * eyePosY + (1 - alpha) * newEyePosY;
+        graphics.setEyePosY(eyePosY);
+
+        if (eyePosY < 0.f)
             graphics.drawCube(glm::vec3(50, -55, 0), 110, Graphics::GROUND);
 
         // TODO
