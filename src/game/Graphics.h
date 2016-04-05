@@ -58,8 +58,8 @@ private:
     static const char* cubeModelPath;
     static const char* suzanneModelPath;
 
-    static const int windowWidth = 800;
-    static const int windowHeight = 800;
+    static const int windowWidth = 700;
+    static const int windowHeight = 700;
 
 public:
     enum Textures

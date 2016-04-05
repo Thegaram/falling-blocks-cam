@@ -4,6 +4,7 @@
 
 #include "Graphics.h"
 #include "../common/Logger.h"
+#include "../common/SharedState.h"
 #include "Controller.h"
 
 void graphicsLoop()
@@ -24,6 +25,7 @@ void graphicsLoop()
 void gameLoop()
 {
     Logger& logger = Logger::getInstance();
+    SharedState& sharedState = SharedState::getInstance();
 
     try
     {
@@ -33,4 +35,6 @@ void gameLoop()
     {
         logger.error("Runtime error:", error.what());
     }
+
+    sharedState.setGameOver();
 }
